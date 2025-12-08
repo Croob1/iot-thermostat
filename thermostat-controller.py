@@ -1,18 +1,16 @@
+import Adafruit_DHT
 import time
-import adafruit_dht
-import board
 
-dht_device = adafruit_dht.DHT11(board.D4)
+SENSOR_TYPE = Adafruit_DHT.DHT11
+GPIO_PIN_NUMBER = 4
 
-while True:
-    try:
-        temperature_c = dht_device.temperature
-        temperature_f = temperature_c * (9 / 5) + 32
+if __name__ == "__main__" :
+  start_time = time.time()
+  humidity, temperature = Adafruit_DHT.read_retry(
+    SENSOR_TYPE, 
+    GPIO_PIN_NUMBER
+  )
+  end_time = time.time()
 
-        humidity = dht_device.humidity
-
-        print("Temp:{:.1f} C / {:.1f} F    Humidity: {}%".format(temperature_c, temperature_f, humidity))
-    except RuntimeError as err:
-        print(err.args[0])
-
-    time.sleep(2.0)
+  print(f"Measured Temp={temperature}°C | Hum={humidity}%")
+  print(f"Measurement took {end_time-start_time}s")
