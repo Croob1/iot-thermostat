@@ -1,3 +1,4 @@
 output/
 venv/
 Adafruit_Python_DHT/
+config.txt
