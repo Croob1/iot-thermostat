@@ -3,6 +3,7 @@ import datetime
 import sys
 import paho.mqtt.client
 import json
+import boto3
 
 address, port, username, password = "127.0.0.1", 1883, "user", "pass"
 
@@ -50,20 +51,28 @@ def save_config():
         sys.exit()
 
 def on_connect(client, userdata, flags, reason_code, properties):
-    client.subscribe("temperatures")
+    client.subscribe("temperature")
 
 def on_message(client, userdata, msg):
-    print(msg.payload)
-    print("test")
+    temperature = msg.payload.decode("utf-8")
+    dynamodb.put_item(
+        TableName="temperatures",
+        Item={
+            'device-id': {'S': '1'},
+            'date-time': {'S': datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")},
+            'temperature': {'N': temperature},
+        }
+    )
 
 load_config()
 
+dynamodb = boto3.client("dynamodb", region_name="us-east-1")
+
 try:
-    client = paho.mqtt.client.Client(paho.mqtt.client.CallbackAPIVersion.VERSION2, client_id="pi", userdata=None, protocol=paho.mqtt.client.MQTTv5)
+    client = paho.mqtt.client.Client(paho.mqtt.client.CallbackAPIVersion.VERSION2, client_id="server", userdata=None, protocol=paho.mqtt.client.MQTTv5)
     client.username_pw_set(username, password)
     client.on_connect = on_connect
-    client.onmessage = on_message
-
+    client.on_message = on_message
     client.connect(address, port)
 except Exception as err:
     log(err)

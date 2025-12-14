@@ -12,6 +12,7 @@ PIN_HEATER = 21
 targetTemps = [0, 0, 0, 0, 0, 0, 0, 21, 21, 21, 0, 0, 0, 0, 0, 0, 0, 21, 21, 21, 0, 0, 0, 0]
 targetTemp = 0
 address, port, username, password = "127.0.0.1", 1883, "user", "pass"
+READ_INTERVAL = 300
 
 GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BCM)
@@ -98,6 +99,6 @@ while True:
         print(f"Temp={temperature}, Target={targetTemp}, HeaterOn=False")
         client.publish("temperature", payload=temperature, qos=1)
 
-    time.sleep(5)
+    time.sleep(READ_INTERVAL)
 
 client.loop_stop()
