@@ -4,7 +4,7 @@ import sys
 import paho.mqtt.client
 import json
 
-address, port, username, password = "127.0.0.1", 1886, "user", "pass"
+address, port, username, password = "127.0.0.1", 1883, "user", "pass"
 
 def log(text):
     try:
@@ -54,6 +54,7 @@ def on_connect(client, userdata, flags, reason_code, properties):
 
 def on_message(client, userdata, msg):
     print(msg.payload)
+    print("test")
 
 load_config()
 

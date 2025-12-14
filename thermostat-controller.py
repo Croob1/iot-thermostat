@@ -11,7 +11,7 @@ PIN_SENSOR = 4
 PIN_HEATER = 21
 targetTemps = [0, 0, 0, 0, 0, 0, 0, 21, 21, 21, 0, 0, 0, 0, 0, 0, 0, 21, 21, 21, 0, 0, 0, 0]
 targetTemp = 0
-address, port, username, password = "127.0.0.1", 1886, "user", "pass"
+address, port, username, password = "127.0.0.1", 1883, "user", "pass"
 
 GPIO.setwarnings(False)
 GPIO.setmode(GPIO.BCM)
